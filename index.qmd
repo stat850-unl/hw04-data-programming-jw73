@@ -1,0 +1,172 @@
+---
+title: "Homework 4: Data Programming"
+author: "Your Name"
+output: html_document
+---
+
+Instructions:
+
+- Answer the first question in R, and the second question in Python
+
+- Once you have finished this assignment, render the document (Ctrl/Cmd-Shift-K or the Render button).
+
+- Commit the qmd file and any other files you have changed to the repository and push your changes.
+
+- In Canvas, submit a link to your github repository containing the updated files.
+
+# About the Data: Steam Games
+
+TidyTuesday is an organization that provides new datasets every Tuesday for people to practice their data tidying and manipulation skills. This assignment uses a data set about Steam (an online gaming platform) game popularity over time. See the [readme](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-03-16/readme.md) for more information about the dataset.
+
+**Data Dictionary**
+
+| variable      | class     | description                                                                          |
+|:---------------------------|:-------------------|:-----------------------|
+| gamename      | character | Name of video games                                                                  |
+| year          | double    | Year of measure                                                                      |
+| month         | character | Month of measure                                                                     |
+| avg           | double    | Average number of players at the same time                                           |
+| gain          | double    | Gain (or loss) Difference in average compared to the previous month (NA = 1st month) |
+| peak          | double    | Highest number of players at the same time                                           |
+| avg_peak_perc | character | Share of the average in the maximum value (avg / peak) in %                          |
+
+```{r steam-games-data-setup-r}
+games <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-16/games.csv')
+
+library(ggplot2) # load ggplot2 package
+```
+
+
+
+```{r, eval = F}
+# Run this if you haven't installed plotnine already
+reticulate::py_install("plotnine")
+```
+
+Alternately, in the terminal type `pip install plotnine`. Either option will work.
+
+
+```{python steam-games-data-setup-py}
+import pandas as pd
+games = pd.read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-16/games.csv')
+
+from plotnine import * # load ggplot2-equivalent package
+```
+
+# Useful Hints
+
+## R
+
+1.  `month.name` is a built-in vector containing month names that you can use to create a factor variable. Factor variables can be easily converted into numeric variables. This might help you get a numeric month, which might help you get to a fractional year.
+
+2.  `subset()` is a function that will subset a data frame based on a logical condition. It might be easier to use than logical indexing (though you can use either). You can also use the `filter` function in the `dplyr` package.
+
+3.  To get a line graph in ggplot2, use `geom_line()`. Using `aes(color = varname)` will color the lines by variable name.
+
+4.  Some sample code to make a line graph in ggplot is provided below:
+
+```{r, message = F, warning = F}
+library(dplyr)
+# Get only January months so that there's one point a year
+jan_data <- subset(games, month == "January")
+
+# x axis is year, y axis is average players
+# group = gamename says draw one line for each game
+ggplot(data = jan_data, 
+       aes(x = year, y = avg, group = gamename)) + 
+  geom_line()
+```
+
+## Python
+
+1.  The `time` module contains the `strptime` function, which may help you to get from month name to month number.
+
+2. Pandas will let you sort a data frame in decreasing order of variable `x` using `sort_values('x', ascending = False)`
+
+3. You can select rows of a python data frame that match a list using `.isin()` [demo](https://www.kite.com/python/answers/how-to-filter-a-pandas-dataframe-with-a-list-by-%60in%60-or-%60not-in%60-in-python). Alternately, Pandas data frames have a method `df.query()` that allows you to pass a logical condition and select rows based on that. This may be easier to use than logical indexing (though you can use either).
+
+4. Using the `.assign()` function to create new variables will reduce the number of errors you run into.
+
+5.  To get a line graph in plotnine, which is a clone of ggplot2 for python, use `geom_line()`. Using `aes(color = 'varname')` will color the lines by variable name. Some sample code to make a line graph in ggplot is provided below:
+
+```{python, message = F, warning = F}
+# Get only January months so that there's one point a year
+jan_data = games.query('month == "January"')
+
+# x axis is year, y axis is average players
+# group = gamename says draw one line for each game
+(
+  ggplot(jan_data, 
+       aes(x = 'year', y = 'avg', group = 'gamename')) + 
+  geom_line()
+)
+  
+```
+
+# Planning R Code: Replicate the plot
+
+Your first goal is to get to this graph by breaking down the problem (replicating the graph) into smaller steps that make sense and that you can accomplish piece-by-piece.
+
+![Target plot to replicate](https://i.imgur.com/rbgdd3X.png)
+
+### Problem Steps
+
+Make a list of steps that will be necessary to get the data you have into this form.
+
+### Problem Code
+
+Provide code that sequentially works through your list of steps to produce the graph. You might put your steps as comments to remind yourself what you're doing at each point in the code.
+
+```{r}
+# Code for step 1 goes here
+
+```
+
+```{r}
+# Code for step 2 goes here
+
+```
+
+
+
+### Reflection
+
+How did your initial list of steps compare to the steps you ended up with when you wrote code? Were your initial steps too detailed? Too simple? What can you learn from this when planning out how to write code for a new problem? 
+
+Write 2-3 sentences addressing the above topic.
+
+
+# Planning Python Code: Replicate a (different) plot
+
+![Plot to replicate](https://i.imgur.com/hoTGRKW.png)
+
+This plot shows the 5 games with the most average users in March of 2020. It is ok if you can replicate this plot to the point where the legend doesn't show up properly, as in this image:
+
+![Legend not quite right](https://i.imgur.com/t0wYCV8.png)
+
+
+#### Problem Steps
+
+Make a list of steps below that will be necessary to get the data you have into this form.
+
+#### Problem Code
+
+Provide code that sequentially works through your list of steps to produce the necessary table of games.
+
+```{python}
+# Code for step 1 goes here
+
+```
+
+
+```{python}
+# Code for step 2 goes here
+
+```
+
+
+### Reflection
+
+How did your initial list of steps compare to the steps you ended up with when you wrote code? Were your initial steps too detailed? Too simple? What can you learn from this when planning out how to write code for a new problem? Did you get any better at writing out your steps this time after answering the previous problem?
+
+Write 2-3 sentences addressing the above topic.
