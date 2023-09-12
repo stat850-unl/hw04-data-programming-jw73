@@ -1,6 +1,6 @@
 ---
 title: "Homework 4: Data Programming"
-author: "Your Name"
+author: "Jing Wang"
 output: html_document
 ---
 
