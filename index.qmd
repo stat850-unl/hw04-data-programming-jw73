@@ -119,12 +119,53 @@ Provide code that sequentially works through your list of steps to produce the g
 
 ```{r}
 # Code for step 1 goes here
+# Step 1: Data Preparation
+library(dplyr)
+
+# Filter the data for the specified games
+selected_games <- c("Counter-Strike: Global Offensive", "Stardew Valley", "Tabletop Simulator", "Team Fortress 2")
+selected_data <- filter(games, gamename %in% selected_games,  year >= 2016, year <= 2021)
+
+# Convert month names to numeric values
+selected_data <- selected_data %>%
+  mutate(month_num = match(month, month.name))
+
+# Convert year to numeric value
+selected_data <- selected_data %>%
+  mutate(year = as.numeric(year))
+
+# Create a new column that combines month and year
+selected_data <- selected_data %>%
+  mutate(month_year = paste(year, month_num,  sep = "-"))
+
+# Sort data by year in ascending order and then by month within each year
+selected_data <- selected_data %>%
+  arrange(year, month_num)
+
 
 ```
 
 ```{r}
 # Code for step 2 goes here
+# Step 2: Create the Plot (Line Plot)
+# Create a subset of the data with one data point per year
+yearly_data <- selected_data %>%
+  group_by(year) %>%
+  slice(1) 
 
+ggplot(data = selected_data, aes(x = month_year, y = avg, group = gamename, color = gamename)) +
+  geom_line()+
+  labs(
+    title = "Average Number of Players by Month and Year",
+    x = "date",
+    y = "avg"
+  )+
+  scale_x_discrete(
+    breaks = yearly_data$month_year,
+    labels = yearly_data$year
+  )
+
+  
 ```
 
 
@@ -155,12 +196,30 @@ Provide code that sequentially works through your list of steps to produce the n
 
 ```{python}
 # Code for step 1 goes here
+# Code for step 1 goes here
+import pandas as pd
+from plotnine import *
+
+# Filter the data for the specified games
+selected_games = ["Counter-Strike: Global Offensive", "Dota 2", "Grand Theft Auto V", "PLAYERUNKNOWN'S BATTLEGROUNDS", "Tom Clancy's Rainbow Six Siege"]
+selected_data = games[(games['gamename'].isin(selected_games)) & (games['year'] >= 2012) & (games['year'] <= 2022)].copy()
+
+# Create a new column that combines month and year with a hyphen
+selected_data['month_year'] = selected_data['year'].astype(str) + '-' + selected_data['month'].astype(str).str.zfill(2)
+
 
 ```
 
 
 ```{python}
+
 # Code for step 2 goes here
+ggplot(selected_data, aes(x="month_year", y="peak", group="gamename", color="gamename")) + geom_line() + \
+    theme(subplots_adjust={'right': 0.75}) +\
+    scale_x_discrete(breaks=["2013-January", "2014-January", "2015-January", "2016-January","2017-January", "2018-January","2019-January", "2020-January", "2021-January"], labels=["", "2014", "",  "2016","", "2018","", "2020",""]) +\
+    xlab("year") +\
+    labs(color="gamecat")
+    
 
 ```
 
