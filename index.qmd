@@ -138,11 +138,6 @@ selected_data <- selected_data %>%
 selected_data <- selected_data %>%
   mutate(month_year = paste(year, month_num,  sep = "-"))
 
-# Sort data by year in ascending order and then by month within each year
-selected_data <- selected_data %>%
-  arrange(year, month_num)
-
-
 ```
 
 ```{r}
@@ -176,6 +171,7 @@ How did your initial list of steps compare to the steps you ended up with when y
 
 Write 2-3 sentences addressing the above topic.
 
+My initial plan for the task turned out to be relatively simple compared to the actual steps I had to take to complete it successfully. One significant challenge I encountered was related to the x-axis representation in the plot. To address this issue, I had to create a new column that combined the month and year. This experience highlights the importance of careful planning and the need to break down complex problems into more detailed and well-defined steps when tackling coding tasks. Such an approach ensures a more efficient and effective implementation.
 
 # Planning Python Code: Replicate a (different) plot
 
@@ -217,7 +213,7 @@ selected_data['month_year'] = selected_data['year'].astype(str) + '-' + selected
 ggplot(selected_data, aes(x="month_year", y="peak", group="gamename", color="gamename")) + geom_line() + \
     theme(subplots_adjust={'right': 0.75}) +\
     scale_x_discrete(breaks=["2013-January", "2014-January", "2015-January", "2016-January","2017-January", "2018-January","2019-January", "2020-January", "2021-January"], labels=["", "2014", "",  "2016","", "2018","", "2020",""]) +\
-    xlab("year") +\
+    xlab("time") +\
     labs(color="gamecat")
     
 
@@ -229,3 +225,6 @@ ggplot(selected_data, aes(x="month_year", y="peak", group="gamename", color="gam
 How did your initial list of steps compare to the steps you ended up with when you wrote code? Were your initial steps too detailed? Too simple? What can you learn from this when planning out how to write code for a new problem? Did you get any better at writing out your steps this time after answering the previous problem?
 
 Write 2-3 sentences addressing the above topic.
+
+The approach I ultimately took for creating the figure using Python code turned out to be quite different from my initial plan. While my initial plan was relatively complex, my current steps simplified the process. However, I did encounter a challenge with the x-axis representation in the plot. To address this issue, I created a new column that combined the month and year. Interestingly, based on my textbook's guidance, it was suggested that there was no need to sort the data again. So, I attempted to plot the figure directly and successfully achieved it. There is no need to label the x-axis and y-axis. Nevertheless, I still faced some issues with the x-scale that need further attention. 
+
